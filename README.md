@@ -29,11 +29,9 @@ java -jar ./target/music-metadata-service-0.0.1.jar
 2. Spring Boot
 3. Open Api
 4. Hibernate
-5. Quartz (Scheduler)
-6. Caffeine (Caching)
-5. JUnit  (Hamcrest - assertions) (assertj - fluent assertions)
-7. Mockito
+5. Flyway
+6. Quartz (Scheduler)
+7. Caffeine (Caching)
+8. JUnit  (Hamcrest - assertions) (assertj - fluent assertions)
+9. Mockito
 
-### Implementation
-1. API
-2. 

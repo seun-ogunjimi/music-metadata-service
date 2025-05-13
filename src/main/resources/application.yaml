@@ -3,11 +3,6 @@ app:
   artist-of-the-day:
     name: "featured-artist"
     cron: "0 0 0 * * *"  # Daily at midnight
-  featured-artist:
-    cache-name: "featured-artist"
-    artist-of-the-day:
-      cron: "0 0 0 * * *"  # Daily at midnight
-    cron: "0 0 0 * * *"  # Daily at midnight
 
 server:
   port: ${PORT:9090}
@@ -27,11 +22,12 @@ spring:
       enabled: true
       path: /h2
   datasource:
-    url:  jdbc:h2:file:${user.home}/.h2/${spring.application.name}db_1  #jdbc:h2:mem:${spring.application.name} #jdbc:h2:file:${user.home}/.h2/${spring.application.name}db
-    username: sa
-    password:
+    url:  jdbc:h2:file:${user.home}/.h2/${spring.application.name}-db  #jdbc:h2:mem:${spring.application.name} #jdbc:h2:file:${user.home}/.h2/${spring.application.name}db
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
     schema-name: MUSIC_METADATA
     driver-class-name: org.h2.Driver
+
 
   jpa:
     database: h2
