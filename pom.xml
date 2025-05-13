@@ -240,7 +240,7 @@
                     <excludes>
                         <exclude>**/model/*</exclude>
                         <exclude>**/domain/*</exclude>
-                        <exclude>**/api/*</exclude>
+
                     </excludes>
                 </configuration>
                 <executions>
