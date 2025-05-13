@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
@@ -15,7 +16,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 @SpringBootTest(
@@ -28,6 +30,9 @@ class FeaturedArtistServiceIntegrationTest {
     private FeaturedArtistService featuredArtistService;
     @Autowired
     private ArtistRepository artistRepository;
+    @Autowired
+    private CacheManager cacheManager;
+
 
     @Test
     void rotateArtistOfTheDay() {
@@ -57,6 +62,10 @@ class FeaturedArtistServiceIntegrationTest {
         }
         artistRepository.saveAll(artistList);
         artistRepository.flush();
+        var cache = cacheManager.getCache("featured-artist");
+        if (cache != null) {
+            cache.clear();
+        }
 
         var currentArtistOfTheDay = featuredArtistService.getArtistOfTheDay();
         // Verify that the current artist of the day is the one with the most current FeaturedAt Date (second to last artist)
