@@ -56,7 +56,6 @@ class FeaturedArtistServiceTest {
         // Verify
         verify(artistRepository).findNextFeaturedArtist();
         verify(artistRepository).save(any(Artist.class));
-        //verify(cacheManager).getCache("featured-artist");
 
         // Verify cache was cleared
         var cache = cacheManager.getCache("featured-artist");
@@ -79,44 +78,6 @@ class FeaturedArtistServiceTest {
         verify(artistRepository).findNextFeaturedArtist();
         verify(artistRepository, never()).save(any(Artist.class));
     }
-
-
- /*   @Test
-    @DisplayName("Should update cache with new artist of the day")
-    void rotateArtistOfTheDay_UpdatesCache() {
-        // Arrange
-        var cache = cacheManager.getCache("featured-artist");
-        var artist = TestUtils.createArtist(TestUtils.MADONNA_ARTIST_ID);
-        when(artistRepository.findNextFeaturedArtist()).thenReturn(Optional.of(artist));
-        when(artistRepository.save(any(Artist.class))).thenReturn(artist);
-        when(artistRepository.findTopByOrderByFeaturedAtDesc()).thenAnswer(
-                invocation -> Optional.ofNullable(cache.get("artist-of-the-day"))
-        );
-
-        // Pre-populate cache with a different artist
-
-        assertThat(cache).isNotNull();
-        var differentArtist = TestUtils.createArtist(TestUtils.MICHAEL_JACKSON_ARTIST_ID);
-        cache.clear();
-        cache.put("'artist-of-the-day'", differentArtist);
-
-        // Act
-        var result = featuredArtistService.rotateArtistOfTheDay();
-
-        // Fetch from cache to verify it was updated
-        var cachedArtist = featuredArtistService.getArtistOfTheDay();
-        System.out.println("========");
-        System.out.println(cache.get("'artist-of-the-day'"));
-        // Assert
-        assertThat(result).isNotNull();
-        assertThat(cachedArtist).isNotNull();
-        assertThat(cachedArtist.getArtistId()).isEqualTo(TestUtils.MADONNA_ARTIST_ID);
-        assertThat(cachedArtist).isEqualTo(result);
-
-        // Verify
-        verify(artistRepository).findNextFeaturedArtist();
-        verify(artistRepository).save(any(Artist.class));
-    }*/
 
 
     @DisplayName("Should get artist of the day when artist exists")
@@ -154,7 +115,7 @@ class FeaturedArtistServiceTest {
         // Verify
         verify(artistRepository, times(1)).findTopByOrderByFeaturedAtDesc();
     }
-
+/*
     //@Test
     void getArtistOfTheDay_UsesCache_WhenCalledMultipleTimes() {
         // Arrange
@@ -174,5 +135,5 @@ class FeaturedArtistServiceTest {
 
         // Verify repository is only called once despite two method calls
         verify(artistRepository, times(1)).findTopByOrderByFeaturedAtDesc();
-    }
+    }*/
 }

@@ -1,0 +1,51 @@
+name: "Build And Test"
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches: [ master, main ]
+  workflow_call:
+    inputs:
+      java-version:
+        type: string
+        default: "21"
+      update-coverage-comment:
+        type: boolean
+        default: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Java
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: ${{inputs.java-version}}
+          distribution: "temurin"
+          cache: maven
+
+      - name: Print Maven Settings
+        shell: bash
+        run: cat /home/runner/.m2/settings.xml
+
+      - name: Run Tests
+        shell: bash
+        run: mvn test
+
+
+      - name: Add Test Coverage Report
+        id: jacoco
+        if: contains(fromJSON('["push", "pull_request"]'), github.event_name)
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Test Coverage Report"
+          update-comment: ${{ inputs.update-coverage-comment }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 85

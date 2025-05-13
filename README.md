@@ -17,11 +17,11 @@ mvn spring-boot:run
 4.  RUN Production: Archived packaging as `.jar` extension.
 
 ```
-mvn clean install
+mvn clean package
 
-java -jar ./target/music-metatdata-service-1.0.0.jar
+java -jar ./target/music-metadata-service-0.0.1.jar
 ```        
-5. Open a browser at the address `http://localhost:9090/`
+5. Open a browser at the address `http://localhost:9090/swagger-ui/index.html`
 
 ###  Language and Framework
 >
@@ -29,4 +29,11 @@ java -jar ./target/music-metatdata-service-1.0.0.jar
 2. Spring Boot
 3. Open Api
 4. Hibernate
+5. Quartz (Scheduler)
+6. Caffeine (Caching)
 5. JUnit  (Hamcrest - assertions) (assertj - fluent assertions)
+7. Mockito
+
+### Implementation
+1. API
+2. 
