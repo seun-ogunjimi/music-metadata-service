@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:${spring.application.name}-test-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+  flyway:
+    clean-disabled: false
+    url: ${spring.datasource.url}
+  jpa:
+    database: h2
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+#app:
+#  artist-of-the-day:
+#    name: "featured-artist"
+#    cron: "*/10 * * * * ?" # every 10 seconds

@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Checkout Api
+  description: This service provides api for checkout and basket related operations
+  version: 1.0.0
+servers:
+  - url: 'http://wayfair.com/'
+tags:
+  - name: checkout-service
+    description: Operations using customer baskets and checkout Api
+
+paths: { }
+components:
+  schemas:
+    PageBasketDTO:
+      allOf:
+        - $ref: 'checkout-dto.yaml#/components/schemas/BasketDTO'
+        - type: object
+          properties:
+            page:
+              type: integer
+              format: int32
+            pageSize:
+              type: integer
+              format: int32
+            totalCount:
+              type: integer
+              format: int64
+            totalPageCount:
+              type: integer
+              format: int32
+    BasketDTO:
+      type: object
+      required:
+        - customerUuid
+        - totalPrice
+      properties:
+        customerUuid:
+          type: string
+          format: uuid
+          description: customer uuid
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerProductDTO'
+        state:
+          $ref: '#/components/schemas/BasketState'
+        totalPrice:
+          type: number
+          #format: decimal
+          description: product grand total price for the number of item
+        totalDiscountPrice:
+          type: number
+          #format: decimal
+          description: product grand total price for the number of item with special discount offer
+    CustomerProductDTO:
+      type: object
+      required:
+        - productUuid
+        - subTotalPrice
+        - quatity
+      properties:
+        productUuid:
+          type: string
+          format: uuid
+          description: product uuid
+        state:
+          $ref: '#/components/schemas/ProductState'
+        quatity:
+          type: integer
+          format: int32
+          description: number of items
+          default: 1
+        subTotalPrice:
+          type: number
+          #format: decimal
+          description: product subtotal price for the number of item
+        subTotalDiscountPrice:
+          type: number
+          #format: decimal
+          description: product subtotal price for the number of item with special discount offer
+        addedOn:
+          type: string
+          format: date-time
+          description: Time when product was added to basket
+    BasketState:
+      type: string
+      enum:
+        - OPEN
+        - IN_CHECKOUT
+        - BLOCKED
+    ProductState:
+      type: string
+      enum:
+        - IN_STOCK
+        - OUT_OF_STOCK
+        - PRICE_CHANGE

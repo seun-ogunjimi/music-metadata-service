@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Tracks API
+  version: 1.0.0
+  description: API for managing and querying music track metadata
+tags:
+  - name: Track
+    description: Operations using Track Api
+
+paths:
+  /tracks:
+    get:
+      tags:
+        - Track
+      summary: Fetch paginated tracks (optionally filtered by musicmetadata)
+      operationId: getTracksByArtistId
+      parameters:
+        - name: artistId
+          in: query
+          description: Filter tracks by musicmetadata UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Paginated tracks returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/TrackPageResponse'
+        '400':
+          description: Invalid query parameters
+        '404':
+          description: Artist not found (when filtering by artistId)
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Track
+      summary: Add a new track (Admin only)
+      operationId: addTrack
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'track-dto.yaml#/components/schemas/CreateTrackRequest'
+      responses:
+        '201':
+          description: Track created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/TrackResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized (missing/invalid token)
+        '403':
+          description: Forbidden (not admin)
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/ErrorResponse'

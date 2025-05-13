@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata API
+  version: 1.0.0
+  contact:
+    name: ICE API Team
+    url: https://iceservices.com
+    email: info@iceservices.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: >
+    Provides api operations for music metadata
+  termsOfService: https://iceservices.com/terms-of-use
+tags:
+  - name: Music Metadata
+    description: Operations using Music Metadata Api
+
+servers:
+  - url: '{protocol}://localhost:{port}'
+    variables:
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+      host:
+        default: localhost
+        enum:
+          - localhost
+          - 127.0.0.1
+      port:
+        default: 80
+        enum:
+          - 80
+          - 8080
+          - 9090
+
+
+paths:
+  /artists/artist-of-the-day:
+    $ref: 'artists/artist-api.yaml#/paths/~1artists~1artist-of-the-day'
+
+  /artists/{artistId}/tracks:
+    $ref: 'artists/artist-api.yaml#/paths/~1artists~1{artistId}~1tracks'
+
+  /artists/{artistId}/name:
+    $ref: 'artists/artist-api.yaml#/paths/~1artists~1{artistId}~1name'
+
+  /tracks:
+    $ref: 'tracks/track-api.yaml#/paths/~1tracks'
+
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, for documentation purposes only

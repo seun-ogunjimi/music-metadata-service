@@ -1,0 +1,70 @@
+# For the scheduler
+app:
+  artist-of-the-day:
+    name: "featured-artist"
+    cron: "0 0 0 * * *"  # Daily at midnight
+  featured-artist:
+    cache-name: "featured-artist"
+    artist-of-the-day:
+      cron: "0 0 0 * * *"  # Daily at midnight
+    cron: "0 0 0 * * *"  # Daily at midnight
+
+server:
+  port: ${PORT:9090}
+
+spring:
+  application:
+    name: music-metadata-service
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=200,expireAfterWrite=24h
+    cache-names:
+      - ${spring.application.name}
+      - ${app.artist-of-the-day.name}
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url:  jdbc:h2:file:${user.home}/.h2/${spring.application.name}db_1  #jdbc:h2:mem:${spring.application.name} #jdbc:h2:file:${user.home}/.h2/${spring.application.name}db
+    username: sa
+    password:
+    schema-name: MUSIC_METADATA
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database: h2
+    generate-ddl: false
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        #dialect: org.hibernate.dialect.H2Dialect
+        format-sql: true
+        default_schema: "`${spring.datasource.schema-name}`"
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    default-schema: ${spring.datasource.schema-name}
+    schemas:
+      - PUBLIC
+      - ${spring.datasource.schema-name}
+    locations:
+        - classpath:db/migration/common
+        - classpath:db/migration/${spring.jpa.database}
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    #path: /api-docs

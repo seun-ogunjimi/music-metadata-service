@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Tracks API
+  version: 1.0.0
+  description: API for managing and querying music track metadata
+tags:
+  - name: Tracks
+    description: Operations using Tracks Api
+
+paths: { }
+
+components:
+  schemas:
+    # --- Requests ---
+    CreateTrackRequest:
+      type: object
+      required:
+        - title
+        - artistId
+        - durationInSeconds
+      properties:
+        title:
+          type: string
+          minLength: 1
+          example: "Levitating"
+        artistId:
+          type: string
+          format: uuid
+          example: "87654321-1234-5678-90ef-abcdef123456"
+        durationInSeconds:
+          type: integer
+          minimum: 1
+          example: 217
+        genre:
+          type: string
+          example: "Pop"
+
+    UpdateArtistNameRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          example: "Dua Lipa (Official)"
+        aliases:
+          type: array
+          items:
+            type: string
+          example: [ "Dua Lipa", "DL" ]

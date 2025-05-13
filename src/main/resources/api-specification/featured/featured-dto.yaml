@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Featured API
+  version: 1.0.0
+  description: API for featured content like "Artist of the Day"
+tags:
+  - name: Featured
+    description: Operations related to featured content
+
+paths: { }
+
+components:
+  schemas:
+    # --- Responses ---
+    TrackResponse:
+      type: object
+      properties:
+        trackId:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-5678-90ef-1234-567890abcdef"
+        title:
+          type: string
+          example: "Thank you for loving me"
+        durationInSeconds:
+          type: integer
+          example: 354
+        genre:
+          type: string
+          example: "Rock"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-01-15T10:30:00Z"
+
+    TrackPageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrackResponse"
+        page:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 20
+        totalItems:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 5
+
+    ArtistReference:
+      type: object
+      properties:
+        artistId:
+          type: string
+          format: uuid
+          example: "87654321-1234-5678-90ef-abcdef123456"
+        name:
+          type: string
+          example: "Queen"
+
+    # --- Error Responses ---
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string

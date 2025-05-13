@@ -1,0 +1,21 @@
+{
+  "library": "spring-cloud",
+  "dateLibrary": "java8",
+  "useTags": "true",
+  "generateApiTests": "false",
+  "generateApiDocumentation": "false",
+  "supportingFiles": "false",
+  "serializableModel": "true",
+  "singleContentTypes": "true",
+  "delegatePattern": "false",
+  "interfaceOnly": "false",
+  "unhandledException": "true",
+  "useBeanValidation": "true",
+  "basePackage": "com.ice.musicmetadata",
+  "modelPackage": "com.ice.musicmetadata.model",
+  "apiPackage": "com.ice.musicmetadata.api",
+  "configPackage": "com.ice.musicmetadata.configuration",
+  "generatedConstructorWithRequiredArgs": "true",
+  "useFeignClientUrl": "true",
+  "useSpringBoot3": "true"
+}

@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Artists API
+  version: 1.0.0
+  description: API for featured content like "Artist of the Day"
+tags:
+  - name: Artists
+    description: Operations related to artists
+
+paths: { }
+
+components:
+  schemas:
+    # --- Responses ---
+    ArtistResponse:
+      type: object
+      properties:
+        artistId:
+          type: string
+          format: uuid
+          example: "87654321-1234-5678-90ef-abcdef123456"
+        name:
+          type: string
+          example: "Bon Jovi"
+        bio:
+          type: string
+          example: "Grammy-winning musicmetadata with 32 awards"
+        aliases:
+          type: array
+          items:
+            type: string
+          example: [ "Jovi", "JBJ" ]
+
+    TrackResponse:
+      type: object
+      properties:
+        trackId:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-5678-90ef-1234-567890abcdef"
+        title:
+          type: string
+          example: "Thank you for loving me"
+        durationInSeconds:
+          type: integer
+          example: 354
+        genre:
+          type: string
+          example: "Rock"
+        releaseDate:
+          type: string
+          format: date
+          example: "2023-01-15"
+
+    TrackPageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrackResponse"
+        page:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 20
+        totalItems:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 5
+
+    TrackRequest:
+      type: object
+      required:
+        - title
+        - durationInSeconds
+      properties:
+        title:
+          type: string
+          minLength: 1
+          example: "Levitating"
+        durationInSeconds:
+          type: integer
+          minimum: 1
+          example: 217
+        genre:
+          type: string
+          example: "Pop"
+        releaseDate:
+          type: string
+          format: date
+          example: "2023-01-15"
+
+    UpdateArtistNameRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          example: "Dua Lipa (Official)"
+        aliases:
+          type: array
+          items:
+            type: string
+          example: [ "Dua Lipa", "DL" ]
+
+    # --- Error Responses ---
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string

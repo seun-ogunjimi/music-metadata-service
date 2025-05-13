@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Tracks API
+  version: 1.0.0
+  description: API for managing and querying music track metadata
+tags:
+  - name: Tracks
+    description: Operations using Tracks Api
+
+paths: { }
+
+components:
+  schemas:
+    # --- Responses ---
+    CreateTrackRequest:
+      type: object
+      required:
+        - title
+        - artistId
+        - durationInSeconds
+      properties:
+        title:
+          type: string
+          minLength: 1
+          example: "Levitating"
+        artistId:
+          type: string
+          format: uuid
+          example: "87654321-1234-5678-90ef-abcdef123456"
+        durationInSeconds:
+          type: integer
+          minimum: 1
+          example: 217
+        genre:
+          type: string
+          example: "Pop"
+        releaseDate:
+          type: string
+          format: date
+          example: "2023-01-15"
+
+    TrackResponse:
+      type: object
+      properties:
+        trackId:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-5678-90ef-1234-567890abcdef"
+        title:
+          type: string
+          example: "Thank you for loving me"
+        durationInSeconds:
+          type: integer
+          example: 354
+        genre:
+          type: string
+          example: "Rock"
+        releaseDate:
+          type: string
+          format: date
+          example: "2023-01-15"
+
+    TrackPageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrackResponse"
+        page:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 20
+        totalItems:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 5

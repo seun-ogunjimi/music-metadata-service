@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Admin API
+  version: 1.0.0
+  description: Admin-only endpoints for managing music metadata
+  x-auth-required: true
+tags:
+  - name: Admin
+    description: Operations for admin users to manage music metadata
+
+paths:
+  /admin/tracks:
+    post:
+      tags:
+        - Admin
+      summary: Add a new track (Admin only)
+      operationId: addTrack
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'admin-dto.yaml#/components/schemas/CreateTrackRequest'
+      responses:
+        '201':
+          description: Track created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/TrackResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized (missing/invalid token)
+        '403':
+          description: Forbidden (not admin)
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artist-dto.yaml#/components/schemas/ErrorResponse'
+
+  /admin/artists/{artistId}/name:
+    patch:
+      tags:
+        - Admin
+      summary: Update musicmetadata name/aliases (Admin only)
+      operationId: updateArtistName
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: artistId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'admin-dto.yaml#/components/schemas/UpdateArtistNameRequest'
+      responses:
+        '200':
+          description: Artist updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artists-dto.yaml#/components/schemas/ArtistResponse'
+        '404':
+          description: Artist not found
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artists-dto.yaml#/components/schemas/ErrorResponse'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '../artists/artists-dto.yaml#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    # --- Security ---
+    securitySchemes:
+      BearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT

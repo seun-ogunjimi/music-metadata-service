@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: Music Metadata Service - Featured API
+  version: 1.0.0
+  description: API for featured content like "Artist of the Day"
+tags:
+    - name: Featured
+      description: Operations related to featured content
+
+paths:
+  /api/featured/artist-of-the-day:
+    get:
+      tags:
+        - Featured
+      summary: Get today's featured musicmetadata
+      operationId: getArtistOfTheDay
+      responses:
+        '200':
+          description: Successfully returned featured musicmetadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistOfTheDayResponse'
+        '404':
+          description: No artists available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ArtistOfTheDayResponse:
+      type: object
+      properties:
+        artistId:
+          type: string
+          format: uuid
+          example: "87654321-1234-5678-90ef-abcdef123456"
+        name:
+          type: string
+          example: "Beyoncé"
+        featuredDate:
+          type: string
+          format: date
+          example: "2023-10-15"
+        bio:
+          type: string
+          example: "Grammy-winning musicmetadata with 32 awards"
+        imageUrl:
+          type: string
+          format: uri
+          example: "https://example.com/beyonce.jpg"
