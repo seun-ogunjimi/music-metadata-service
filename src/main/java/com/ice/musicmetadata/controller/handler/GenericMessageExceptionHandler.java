@@ -44,7 +44,8 @@ public class GenericMessageExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler(Exception.class)
     public final @NotNull ResponseEntity<ErrorResponse> generalException(Exception ex) {
-        return errorResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex, List.of("An error occurred, please try again later or contact support."));
+        var errorMessage = errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex, List.of("An error occurred, please try again later or contact support."));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
 
     @Override
@@ -139,15 +140,6 @@ public class GenericMessageExceptionHandler extends ResponseEntityExceptionHandl
         return errorResponseEntity(errorMessage);
     }
 
-    private ResponseEntity<ErrorResponse> errorResponseEntity(
-            HttpStatus status, Exception ex, List<String> errors) {
-        var error = String.join("\n", errors == null ? List.of(status.getReasonPhrase()) : errors);
-        var errorMessage = new ErrorResponse().status(status.value())
-                .message(ex.getMessage())
-                .error(error)
-                .timestamp(OffsetDateTime.now());
-        return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
-    }
 
     private ErrorResponse errorResponse(
             HttpStatus status, Throwable ex, List<String> errors) {
